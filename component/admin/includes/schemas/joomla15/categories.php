@@ -35,7 +35,7 @@ class redMigratorCategories extends redMigratorCategory
 
 		$where_or   = array();
 		$where_or[] = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
-		$where_or[] = "section IN ('com_banner', 'com_contact', 'com_contact_details', 'com_content', 'com_newsfeeds', 'com_sections', 'com_weblinks' )";
+		$where_or[] = "section IN ('com_banner', 'com_contact', 'com_contact_details', 'com_content', 'com_newsfeeds', 'com_sections')";
 
 		$conditions['order']    = "id DESC, section DESC, ordering DESC";
 		$conditions['where_or'] = $where_or;

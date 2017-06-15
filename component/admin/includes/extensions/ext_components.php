@@ -56,7 +56,7 @@ class redMigratorExtensionsComponents extends redMigrator
 		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact',
 		 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_redmigrator', 'com_languages', 'com_login', 'com_mailto',
 		  'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search',
-		   'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
+		   'com_sections', 'com_templates', 'com_user', 'com_users', 'com_wrapper' )";
 
 		$conditions['where'] = $where;
 
