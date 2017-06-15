@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 /**
@@ -45,27 +45,31 @@ class redMigratorExtensionsPlugins extends redMigrator
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['as'] = "p";
-		
+
 		$conditions['select'] = 'name, \'plugin\' AS type, element, folder, client_id, ordering, params';
 
 		$where = array();
-		$where[] = "element   NOT   IN   ('joomla',   'ldap',   'gmail',   'openid',   'content',   'categories',   'contacts',   'sections',   'newsfeeds',   'weblinks',   'pagebreak',   'vote',   'emailcloak',   'geshi',   'loadmodule',   'pagenavigation', 'none',   'tinymce',   'xstandard',   'image',   'readmore',   'sef',   'debug',   'legacy',   'cache',   'remember', 'backlink', 'log', 'blogger', 'mtupdate' )";
-		
+		$where[] = "element   NOT   IN   ('joomla',   'ldap',   'gmail',   'openid',   'content',   'categories',   'contacts',   'sections',
+		   'newsfeeds',   'weblinks',   'pagebreak',   'vote',   'emailcloak',   'geshi',   'loadmodule',   'pagenavigation', 'none',
+		      'tinymce',   'xstandard',   'image',   'readmore',   'sef',   'debug',   'legacy',   'cache',   'remember', 'backlink', 'log',
+		       'blogger', 'mtupdate' )";
+
 		$conditions['where'] = $where;
 
 		$conditions['group_by'] = 'element';
-		
+
 		return $conditions;
 	}
 
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
-	 * @return	array	Returns a reference to the source data array.
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @param null $rows
+	 *
+	 * @return array Returns a reference to the source data array.
+	 * @since    3.0.0
 	 */
 	public function databaseHook($rows = null)
 	{

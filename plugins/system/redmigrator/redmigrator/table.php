@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Check to ensure this file is within the rest of the framework
@@ -51,7 +51,7 @@ class redMigratorTable extends JTable
 	/**
 	 * Cleanup
 	 *
-	 * @return  boolean 
+	 * @return  boolean
 	 *
 	 * @since   3.0
 	 */
@@ -60,9 +60,9 @@ class redMigratorTable extends JTable
 		$table = isset($this->_parameters['HTTP_TABLE']) ? $this->_parameters['HTTP_TABLE'] : '';
 
 		// Getting the database instance
-		$db = JFactory::getDbo();	
+		$db = JFactory::getDbo();
 
-		$query = "UPDATE redmigrator_plugin_steps SET cid = 0"; 
+		$query = "UPDATE redmigrator_plugin_steps SET cid = 0";
 		if ($table != false) {
 			$query .= " WHERE name = '{$table}'";
 		}
@@ -79,7 +79,7 @@ class redMigratorTable extends JTable
 	 * @access	public
 	 * @return	int	The total of rows
 	 */
-	public function load( $oid = null )
+	public function load($oid = null, $reset = true )
 	{
 		$key = $this->getKeyName();
 		$table = $this->getTableName();
@@ -92,14 +92,14 @@ class redMigratorTable extends JTable
 			$this->$key = $oid;
 		}
 
-		$this->reset();	
+		$this->reset();
 
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
 		// Get the conditions
 		$conditions = $this->getConditionsHook();
-		
+
 		//
 		$where = '';
 		if (isset($conditions['where'])) {
@@ -110,7 +110,7 @@ class redMigratorTable extends JTable
 		if (isset($conditions['where_or'])) {
 			$where_or = count( $conditions['where_or'] ) ? 'WHERE ' . implode( ' OR ', $conditions['where_or'] ) : '';
 		}
-	
+
 		$select = isset($conditions['select']) ? $conditions['select'] : '*';
 		$as = isset($conditions['as']) ? 'AS '.$conditions['as'] : '';
 
@@ -159,7 +159,7 @@ class redMigratorTable extends JTable
 	public function _updateID($id)
 	{
 		// Getting the database instance
-		$db = JFactory::getDbo();	
+		$db = JFactory::getDbo();
 
 		$name = $this->_getStepName();
 
@@ -179,7 +179,7 @@ class redMigratorTable extends JTable
 	public function _getStepID()
 	{
 		// Getting the database instance
-		$db = JFactory::getDbo();	
+		$db = JFactory::getDbo();
 
 		$name = $this->_getStepName();
 
@@ -216,10 +216,10 @@ class redMigratorTable extends JTable
 	 */
 	public function getConditionsHook()
 	{
-		$conditions = array();		
+		$conditions = array();
 		$conditions['where'] = array();
 		// Do customisation of the params field here for specific data.
-		return $conditions;	
+		return $conditions;
 	}
 
 	/**
@@ -232,7 +232,7 @@ class redMigratorTable extends JTable
 	public function migrate()
 	{
 		// Do custom migration
-	}	
+	}
 
 	/**
 	 * Get total of the rows of the table
@@ -340,7 +340,7 @@ class redMigratorTable extends JTable
 		$table = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table); 
+		$table = str_replace ('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$db->setQuery('SHOW TABLES');
@@ -369,7 +369,7 @@ class redMigratorTable extends JTable
 		$table = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table); 
+		$table = str_replace ('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$query = "SELECT params FROM {$table} WHERE `option` = 'com_content' LIMIT 1";
@@ -400,10 +400,10 @@ class redMigratorTable extends JTable
 			{ // internal field
 				continue;
 			}
-			
+
 			$array[$k] = $v;
 		}
-		
+
 		$json = json_encode($array);
 
 		return $json;
@@ -441,5 +441,5 @@ class redMigratorTable extends JTable
 	protected function convertParamsHook(&$object)
 	{
 		// Do customisation of the params field here for specific data.
-	}	
+	}
 }

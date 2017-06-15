@@ -5,41 +5,43 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 /**
  * Upgrade class for Weblinks
  *
  * This class takes the weblinks from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since    0.4.5
  */
 class redMigratorWeblinks extends redMigrator
 {
 	/**
 	 * Setting the conditions hook
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return    void
+	 * @since    3.0.0
+	 * @throws    Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
 
 		$conditions['select'] = '`id`, `catid`, `title`, `alias`, `url`, `description`, `date`, `hits`, '
-     .' `published` AS state, `checked_out`, `checked_out_time`, `ordering`, `archived`, `approved`,`params`';
-				
+			. ' `published` AS state, `checked_out`, `checked_out_time`, `ordering`, `archived`, `approved`,`params`';
+
 		return $conditions;
 	}
 
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
-	 * @return	array	Returns a reference to the source data array.
-	 * @since	0.4.5
-	 * @throws	Exception
+	 * @param null $rows
+	 *
+	 * @return array Returns a reference to the source data array.
+	 * @since    0.4.5
 	 */
 	public function databaseHook($rows = null)
 	{
@@ -53,13 +55,14 @@ class redMigratorWeblinks extends redMigrator
 
 		return $rows;
 	}
-	
+
 	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @return	void
-	 * @since	3.0.
-	 * @throws	Exception
+	 * @param null $rows
+	 *
+	 * @return void
+	 * @since    3.0.
 	 */
 	public function dataHook($rows = null)
 	{
@@ -74,13 +77,14 @@ class redMigratorWeblinks extends redMigrator
 		{
 			// Convert the array into an object.
 			$row = (array) $row;
-			
-			$cid = $row['catid'];
+
+			$cid          = $row['catid'];
 			$row['catid'] = &$categories[$cid]->new;
 
 			$row['language'] = '*';
 
-			if (version_compare(PHP_VERSION, '3.0', '>=')) {
+			if (version_compare(PHP_VERSION, '3.0', '>='))
+			{
 				$row['created'] = $row['date'];
 				unset($row['approved']);
 				unset($row['archived']);

@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Check to ensure this file is included in Joomla!
@@ -14,10 +14,10 @@ defined('_JEXEC') or die;
 /**
  * redmigrator step class
  *
- * @package		redmigrator
+ * @package        redmigrator
  */
 class redMigratorStep
-{	
+{
 	public $id = null;
 	public $name = null;
 	public $title = null;
@@ -49,9 +49,9 @@ class redMigratorStep
 
 	public $debug = '';
 	public $error = '';
-	
+
 	/**
-	 * @var      
+	 * @var
 	 * @since  3.0
 	 */
 	protected $_db = null;
@@ -65,11 +65,16 @@ class redMigratorStep
 		$this->_db = JFactory::getDBO();
 
 		// Set step table
-		if ($extensions == false) {
+		if ($extensions == false)
+		{
 			$this->_table = '#__redmigrator_steps';
-		}else if($extensions === 'tables') {
+		}
+		elseif ($extensions === 'tables')
+		{
 			$this->_table = '#__redmigrator_extensions_tables';
-		}else if($extensions == true) {
+		}
+		elseif ($extensions == true)
+		{
 			$this->_table = '#__redmigrator_extensions';
 		}
 
@@ -79,7 +84,7 @@ class redMigratorStep
 
 	/**
 	 *
-	 * @param   stdClass   $options  Parameters to be passed to the database driver.
+	 * @param   stdClass $options Parameters to be passed to the database driver.
 	 *
 	 * @return  redmigrator  A redmigrator object.
 	 *
@@ -101,13 +106,14 @@ class redMigratorStep
 	}
 
 	/**
-	 * Method to set the parameters. 
+	 * Method to set the parameters.
 	 *
-	 * @param   array  $parameters  The parameters to set.
+	 * @param $data
 	 *
-	 * @return  void
+	 * @return void
+	 * @internal param array $parameters The parameters to set.
 	 *
-	 * @since   3.0.0
+	 * @since    3.0.0
 	 */
 	public function setParameters($data)
 	{
@@ -116,7 +122,7 @@ class redMigratorStep
 		{
 			foreach ($data as $k => $v)
 			{
-				if (property_exists ( $this , $k ))
+				if (property_exists($this, $k))
 				{
 					// Perform url decoding so that any use of '+' as the encoding of the space character is correctly handled.
 					$this->$k = urldecode((string) $v);
@@ -126,7 +132,7 @@ class redMigratorStep
 	}
 
 	/**
-	 * Method to get the parameters. 
+	 * Method to get the parameters.
 	 *
 	 * @return  array  $parameters  The parameters of this object.
 	 *
@@ -138,10 +144,12 @@ class redMigratorStep
 
 		foreach ($this as $k => $v)
 		{
-			if (property_exists ( $this , $k ))
+			if (property_exists($this, $k))
 			{
-				if (!is_object($v)) {
-					if ($v != "" || $k == 'total' || $k == 'start' || $k == 'stop') {
+				if (!is_object($v))
+				{
+					if ($v != "" || $k == 'total' || $k == 'start' || $k == 'stop')
+					{
 						// Perform url decoding so that any use of '+' as the encoding of the space character is correctly handled.
 						$return[$k] = urldecode((string) $v);
 					}
@@ -155,12 +163,16 @@ class redMigratorStep
 	/**
 	 * Get the next step
 	 *
-	 * @return   step object
+	 * @param bool $name
+	 * @param bool $json
+	 *
+	 * @return step object
 	 */
-	public function getStep($name = false, $json = true) {
-
+	public function getStep($name = false, $json = true)
+	{
 		// Check if step is loaded
-		if (empty($name)) {
+		if (empty($name))
+		{
 			return false;
 		}
 
@@ -170,76 +182,88 @@ class redMigratorStep
 		$limit = $params->chunk_limit;
 
 		// Getting the total
-		if (isset($this->source)) {
+		if (isset($this->source))
+		{
 			$this->total = redMigratorHelper::getTotal($this);
 		}
 
 		// We must to fragment the steps
-		if ($this->total > $limit) {
-
-			if ($this->cache == 0 && $this->status == 0) {
-
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-					$this->cache = round( ($this->total-1) / $limit, 0, PHP_ROUND_HALF_DOWN);
-				}else{
-					$this->cache = round( ($this->total-1) / $limit);
+		if ($this->total > $limit)
+		{
+			if ($this->cache == 0 && $this->status == 0)
+			{
+				if (version_compare(PHP_VERSION, '5.3.0') >= 0)
+				{
+					$this->cache = round(($this->total - 1) / $limit, 0, PHP_ROUND_HALF_DOWN);
 				}
+				else
+				{
+					$this->cache = round(($this->total - 1) / $limit);
+				}
+
 				$this->start = 0;
-				$this->stop = $limit - 1;
+				$this->stop  = $limit - 1;
 				$this->first = true;
 				$this->debug = "{{{1}}}";
-
-			} else if ($this->cache == 1 && $this->status == 1) {
-
+			}
+			elseif ($this->cache == 1 && $this->status == 1)
+			{
 				$this->start = $this->cid;
 				$this->cache = 0;
-				$this->stop = $this->total - 1;
+				$this->stop  = $this->total - 1;
 				$this->debug = "{{{2}}}";
 				$this->first = false;
-
-			} else if ($this->cache > 0) { 
-
+			}
+			elseif ($this->cache > 0)
+			{
 				$this->start = $this->cid;
-				$this->stop = ($this->start - 1) + $limit;
+				$this->stop  = ($this->start - 1) + $limit;
 				$this->cache = $this->cache - 1;
 				$this->debug = "{{{3}}}";
 				$this->first = false;
 
-				if ($this->stop > $this->total) {
+				if ($this->stop > $this->total)
+				{
 					$this->stop = $this->total - 1;
 					$this->next = true;
-				}else{
+				}
+				else
+				{
 					$this->middle = true;
 				}
 			}
 
 			// Status == 1
 			$this->status = 1;
-
-		}else if ($this->total == 0) {
-
-			$this->stop = -1;
-			$this->next = 1;
+		}
+		elseif ($this->total == 0)
+		{
+			$this->stop  = -1;
+			$this->next  = 1;
 			$this->first = true;
-			if ($this->name == $this->laststep) {
+
+			if ($this->name == $this->laststep)
+			{
 				$this->end = true;
 			}
-			$this->cache = 0;
+
+			$this->cache  = 0;
 			$this->status = 2;
-			$this->debug = "{{{4}}}";
-
-		}else{
-
+			$this->debug  = "{{{4}}}";
+		}
+		else
+		{
 			//$this->next = true;
 			$this->start = 0;
 			$this->first = 1;
 			$this->cache = 0;
-			$this->stop = $this->total - 1;
+			$this->stop  = $this->total - 1;
 			$this->debug = "{{{5}}}";
 		}
 
 		// Mark if is the end of the step
-		if ($this->name == $this->laststep && $this->cache == 1) {
+		if ($this->name == $this->laststep && $this->cache == 1)
+		{
 			$this->end = true;
 		}
 
@@ -252,23 +276,30 @@ class redMigratorStep
 	/**
 	 * Getting the current step from database and put it into object properties
 	 *
-	 * @return   step object
+	 * @param null $name
+	 *
+	 * @return step object
 	 */
-	public function _load($name = null) {
+	public function _load($name = null)
+	{
 
 		// Getting the data
 		$query = $this->_db->getQuery(true);
 		$query->select('e.*');
-		$query->from($this->_table.' AS e');
+		$query->from($this->_table . ' AS e');
 
-		if ($this->_table == '#__redmigrator_extensions_tables') {
+		if ($this->_table == '#__redmigrator_extensions_tables')
+		{
 			$query->leftJoin('`#__redmigrator_extensions` AS ext ON ext.name = e.element');
 			$query->select('ext.xmlpath');
 		}
 
-		if (!empty($name)) {
+		if (!empty($name))
+		{
 			$query->where("e.name = '{$name}'");
-		}else{
+		}
+		else
+		{
 			$query->where("e.status != 2");
 		}
 
@@ -280,12 +311,15 @@ class redMigratorStep
 
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
-		if ($error) {
+
+		if ($error)
+		{
 			return false;
 		}
 
 		// Check if step is an array
-		if (!is_array($step)) {
+		if (!is_array($step))
+		{
 			return false;
 		}
 
@@ -296,9 +330,12 @@ class redMigratorStep
 		$query->select('name');
 		$query->from($this->_table);
 		$query->where("status = 0");
-		if ($this->_table == '#__redmigrator_extensions_tables') {
+
+		if ($this->_table == '#__redmigrator_extensions_tables')
+		{
 			$query->where("element = '{$step['element']}'");
 		}
+
 		$query->order('id DESC');
 		$query->limit(1);
 
@@ -314,18 +351,20 @@ class redMigratorStep
 	/**
 	 * updateStep
 	 *
-	 * @return	none
-	 * @since	2.5.2
+	 * @return    none
+	 * @since    2.5.2
 	 */
-	public function _updateStep() {
-
+	public function _updateStep()
+	{
 		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
 
 		$columns = array('status', 'cache', 'cid', 'total', 'start', 'stop', 'first');
 
-		foreach ($columns as $column) {
-			if (!empty($this->$column)) {
+		foreach ($columns as $column)
+		{
+			if (!empty($this->$column))
+			{
 				$query->set("{$column} = {$this->$column}");
 			}
 		}
@@ -337,7 +376,8 @@ class redMigratorStep
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
 
-		if ($error) {
+		if ($error)
+		{
 			throw new Exception($error);
 		}
 
@@ -345,12 +385,13 @@ class redMigratorStep
 	}
 
 	/**
-	 * 
 	 *
-	 * @return  boolean  True if the user and pass are authorized
+	 *
+	 * @param $id
+	 *
+	 * @return bool True if the user and pass are authorized
 	 *
 	 * @since   1.0
-	 * @throws  InvalidArgumentException
 	 */
 	public function _updateID($id)
 	{
@@ -360,6 +401,7 @@ class redMigratorStep
 		$query->update($this->_table);
 		$query->set("`cid` = '{$id}'");
 		$query->where("name = {$this->_db->quote($name)}");
+
 		// Execute the query
 		return $this->_db->setQuery($query)->execute();
 	}
@@ -367,10 +409,11 @@ class redMigratorStep
 	/**
 	 * Updating the steps table
 	 *
-	 * @return  boolean  True if the user and pass are authorized
+	 * @param bool $total
+	 *
+	 * @return bool True if the user and pass are authorized
 	 *
 	 * @since   1.0
-	 * @throws  InvalidArgumentException
 	 */
 	public function _nextID($total = false)
 	{
@@ -389,11 +432,12 @@ class redMigratorStep
 	public function _getStepID()
 	{
 		$this->_load();
+
 		return $this->cid;
 	}
 
 	/**
-	 * @return  string	The step name  
+	 * @return  string    The step name
 	 *
 	 * @since   3.0
 	 */

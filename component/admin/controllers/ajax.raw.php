@@ -5,13 +5,13 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 defined('_JEXEC') or die;
 
 /**
- * The redMigrator ajax controller 
+ * The redMigrator ajax controller
  *
  * @package     redMigrator
  * @subpackage  com_redMigrator
@@ -28,10 +28,12 @@ class redMigratorControllerAjax extends RControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param   string	$name	The name of the model.
-	 * @param   string	$prefix	The prefix for the model class name.
+	 * @param   string $name   The name of the model.
+	 * @param   string $prefix The prefix for the model class name.
 	 *
-	 * @return  redMigratorModel
+	 * @param array    $config
+	 *
+	 * @return redMigratorModel
 	 * @since   3.0.3
 	 */
 	public function getModel($name = '', $prefix = 'redMigratorModel', $config = array())

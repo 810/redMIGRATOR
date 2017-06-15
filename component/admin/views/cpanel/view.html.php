@@ -12,11 +12,11 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.view' );
+jimport('joomla.application.component.view');
 
 /**
- * @package		MatWare
- * @subpackage	com_jupgrade
+ * @package        MatWare
+ * @subpackage     com_jupgrade
  */
 class redMigratorViewCpanel extends RView
 {
@@ -29,9 +29,9 @@ class redMigratorViewCpanel extends RView
 	/**
 	 * Display the view.
 	 *
-	 * @param	string	$tpl	The subtemplate to display.
+	 * @param    string $tpl The subtemplate to display.
 	 *
-	 * @return	void
+	 * @return    void
 	 */
 	function display($tpl = null)
 	{
@@ -44,25 +44,26 @@ class redMigratorViewCpanel extends RView
 		//
 		$db = JFactory::getDBO();
 
-		if (!$params->method) {
+		if (!$params->method)
+		{
 			$default_params = '{"method":"rest","rest_hostname":"http:\/\/www.example.org\/","rest_username":"","rest_password":"","rest_key":"","path":"","driver":"mysql","hostname":"localhost","username":"","password":"","database":"","prefix":"jos_","skip_checks":"0","skip_files":"1","skip_templates":"1","skip_extensions":"1","skip_core_users":"0","skip_core_categories":"0","skip_core_sections":"0","skip_core_contents":"0","skip_core_contents_frontpage":"0","skip_core_menus":"0","skip_core_menus_types":"0","skip_core_modules":"0","skip_core_modules_menu":"0","skip_core_banners":"0","skip_core_banners_clients":"0","skip_core_banners_tracks":"0","skip_core_contacts":"0","skip_core_newsfeeds":"0","skip_core_weblinks":"0","positions":"0","debug":"0"}';
 
 			$query = "UPDATE #__extensions SET `params` = '{$default_params}' WHERE `element` = 'com_redmigrator'";
-			$db->setQuery( $query );
+			$db->setQuery($query);
 			$db->query();
 
 			// Get params.. again
-			$params	= redMigratorHelper::getParams();
+			$params = redMigratorHelper::getParams();
 		}
 
 		// Load mooTools
 		JHtml::_('behavior.framework', true);
 
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.'/redmigrator.xml';
+		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . '/redmigrator.xml';
 
 		$xml = JFactory::getXML($xmlfile);
 
-		$this->params =	$params;
+		$this->params  = $params;
 		$this->version = $xml->version[0];
 
 		parent::display($tpl);
@@ -75,7 +76,7 @@ class redMigratorViewCpanel extends RView
 	 */
 	public function getToolbar()
 	{
-		$user  = JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$firstGroup = new RToolbarButtonGroup;
 

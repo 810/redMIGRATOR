@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Check to ensure this file is included in Joomla!
@@ -14,25 +14,25 @@ defined('_JEXEC') or die;
 /**
  * redMigrator driver class
  *
- * @package		MatWare
- * @subpackage	com_redMigrator
+ * @package        MatWare
+ * @subpackage     com_redMigrator
  */
 class redMigratorDriver
-{	
+{
 	/**
-	 * @var      
+	 * @var
 	 * @since  3.0
 	 */
 	public $params = null;
-	
+
 	/**
-	 * @var      
+	 * @var
 	 * @since  3.0
 	 */
 	public $_db = null;
 
 	/**
-	 * @var	array
+	 * @var    array
 	 * @since  3.0
 	 */
 	protected $_step = null;
@@ -42,22 +42,24 @@ class redMigratorDriver
 		jimport('legacy.component.helper');
 		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
-		// Set the step params	
+		// Set the step params
 		$this->_step = $step;
 
 		$this->params = redMigratorHelper::getParams();
 
-		// Creating dabatase instance for this installation
+		// Creating database instance for this installation
 		$this->_db = JFactory::getDBO();
 	}
 
 	/**
 	 *
-	 * @param   stdClass   $options  Parameters to be passed to the database driver.
+	 * @param redMigratorStep|null $step
 	 *
-	 * @return  redMigrator  A redMigrator object.
+	 * @return redMigrator A redMigrator object.
 	 *
-	 * @since  3.0.0
+	 * @internal param stdClass $options Parameters to be passed to the database driver.
+	 *
+	 * @since    3.0.0
 	 */
 	static function getInstance(redMigratorStep $step = null)
 	{
@@ -69,10 +71,11 @@ class redMigratorDriver
 
 		// Derive the class name from the driver.
 		$class_name = 'redMigratorDriver' . ucfirst(strtolower($params->method));
-		$class_file = JPATH_COMPONENT_ADMINISTRATOR.'/includes/driver/'.$params->method.'.php';
+		$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/includes/driver/' . $params->method . '.php';
 
 		// Require the driver file
-		if (JFile::exists($class_file)) {
+		if (JFile::exists($class_file))
+		{
 			JLoader::register($class_name, $class_file);
 		}
 
@@ -108,7 +111,7 @@ class redMigratorDriver
 	}
 
 	/**
-	 * @return  string	The step name  
+	 * @return  string    The step name
 	 *
 	 * @since   3.0
 	 */

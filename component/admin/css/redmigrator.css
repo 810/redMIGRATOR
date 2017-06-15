@@ -4,12 +4,16 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 /* Toolbar */
 .icon-48-redmigrator {
     background: url(../images/icon-48-redmigrator.png) no-repeat left;
+}
+
+.span12.content {
+	margin-top: 50px;
 }
 
 div#error {

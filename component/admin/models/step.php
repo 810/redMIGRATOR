@@ -5,31 +5,35 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
-JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
 
 /**
  * redMigrator Model
  *
- * @package		redMigrator
+ * @package        redMigrator
  */
 class redMigratorModelStep extends RModelAdmin
 {
 	/**
 	 * Initial checks in redMigrator
 	 *
-	 * @return	none
-	 * @since	1.2.0
+	 * @param bool $name
+	 * @param bool $json
+	 * @param bool $extensions
+	 *
+	 * @return none
+	 * @since    1.2.0
 	 */
-	public function step($name = false, $json = true, $extensions = false) {
-
+	public function step($name = false, $json = true, $extensions = false)
+	{
 		// Check if extensions exists if not get it from URI request
 		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
 
@@ -42,9 +46,12 @@ class redMigratorModelStep extends RModelAdmin
 		// Get the next step
 		$step->getStep($name);
 
-		if (!redMigratorHelper::isCli()) {
+		if (!redMigratorHelper::isCli())
+		{
 			echo $step->getParameters();
-		}else{
+		}
+		else
+		{
 			return $step->getParameters();
 		}
 	}
@@ -52,15 +59,17 @@ class redMigratorModelStep extends RModelAdmin
 	/**
 	 * returnError
 	 *
-	 * @return	none
-	 * @since	2.5.0
+	 * @param $number
+	 * @param $text
+	 *
+	 * @return none
+	 * @since    2.5.0
 	 */
-	public function returnError ($number, $text)
+	public function returnError($number, $text)
 	{
 		$message['number'] = $number;
-		$message['text'] = JText::_($text);
+		$message['text']   = JText::_($text);
 		echo json_encode($message);
 		exit;
 	}
-
-} // end class
+}

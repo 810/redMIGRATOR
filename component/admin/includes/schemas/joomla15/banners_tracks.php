@@ -5,9 +5,10 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 /**
  * Upgrade class for Banners
  *
@@ -20,18 +21,18 @@ class redMigratorBannersTracks extends redMigrator
 	/**
 	 * Setting the conditions hook
 	 *
-	 * @return	array
-	 * @since	3.1.0
-	 * @throws	Exception
+	 * @return    array
+	 * @since    3.1.0
+	 * @throws    Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['where'] = array();
 
 		$conditions['group_by'] = "banner_id";
-		
+
 		return $conditions;
 	}
-} // end class
+}

@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
@@ -56,6 +56,8 @@ window.addEvent('domready', function() {
 
 				<div id="update">
 					<br /><img src="components/com_redmigrator/images/update.png" align="middle" border="0"/><br />
+					<span style="font-size: 32px">+</span>
+					<br /><img src="components/com_redmigrator/images/kunenalogo.png" style="height: 80px" align="middle" border="0"/><br />
 					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
 				</div>
 
@@ -108,12 +110,13 @@ window.addEvent('domready', function() {
 					<div id="info_version"><i><?php echo JText::_('redmigrator'); ?></i> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
 					<div id="info_thanks">
 						<p>
-							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.redcomponent.com/">redCOMPONENT &#169;</a></i>  Copyright 2005-2013<br />
+							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.redcomponent.com/">redCOMPONENT &#169;</a></i>  Copyright 2005-2017<br />
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
-						<h3>							
+						<h3>
 							<a href="http://wiki.redcomponent.com/index.php?title=RedMIGRATOR:Table_of_Contents">Wiki</a><br />
 						</h3>
+						<p>Special Kunena Migration Added.<br />&#169; Copyright Kunena Team. 2009-2017</p>
 					</div>
 				</div>
 

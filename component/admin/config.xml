@@ -69,7 +69,7 @@
             label="COM_REDMIGRATOR_CONFIG_DATABASE_TITLE"
             description="COM_REDMIGRATOR_CONFIG_DATABASE_TITLE_DESC">
 
-        <field name="old_dbtype" type="list" default="mysql" label="Database driver" description="Database driver">
+        <field name="old_dbtype" type="list" default="mysqli" label="Database driver" description="Database driver">
             <option value="mysql">MySQL</option>
             <option value="mysqli">MySQLi</option>
         </field>
@@ -127,7 +127,7 @@
         <field
                 name="skip_checks"
                 type="radio"
-                default="0"
+                default="1"
                 label="Skip checks"
                 description=""
                 class="btn-group"

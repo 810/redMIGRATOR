@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 defined('_JEXEC') or die;
@@ -31,7 +31,7 @@ class redMigratorHelper
 	}
 
 	/**
-	 * Getting the parameters 
+	 * Getting the parameters
 	 *
 	 * @return  bool	True on success
 	 *
@@ -43,9 +43,12 @@ class redMigratorHelper
 		$sapi = php_sapi_name();
 
 		// Getting the params and Joomla version web and cli
-		if ($sapi != 'cli') {
+		if ($sapi != 'cli')
+		{
 			$params	= JComponentHelper::getParams('com_redmigrator');
-		}else if ($sapi == 'cli') {
+		}
+		elseif ($sapi == 'cli')
+		{
 			$params = new JRegistry(new JConfig);
 		}
 
@@ -55,14 +58,18 @@ class redMigratorHelper
 	/**
 	 * Require the correct file from step
 	 *
-	 * @return  int	The total number
+	 * @param $name
+	 * @param $xmlpath
+	 * @param $class
+	 *
+	 * @return int The total number
 	 *
 	 * @since   3.0.0
 	 */
 	public static function requireClass($name, $xmlpath, $class)
 	{
-		if (!empty($name)) {
-
+		if (!empty($name))
+		{
 			// Loading the JFile class
 			jimport('joomla.filesystem.file');
 
@@ -70,17 +77,22 @@ class redMigratorHelper
 			$file_checks = JPATH_COMPONENT_ADMINISTRATOR."/includes/extensions/{$name}.php";
 
 			// Require the file
-			if (JFile::exists($file_core)) {
+			if (JFile::exists($file_core))
+			{
 				JLoader::register($class, $file_core);
 			// Checks
-			}else if (JFile::exists($file_checks)) {
+			}
+			elseif (JFile::exists($file_checks))
+			{
 				JLoader::register($class, $file_checks);
 			// 3rd party extensions
-			}else if (isset($xmlpath)) {
-
+			}
+			elseif (isset($xmlpath))
+			{
 				$phpfile_strip = JFile::stripExt(JPATH_PLUGINS."/redmigrator/".$xmlpath);
 
-				if (JFile::exists("{$phpfile_strip}.php")) {
+				if (JFile::exists("{$phpfile_strip}.php"))
+				{
 					JLoader::register($class, "{$phpfile_strip}.php");
 				}
 			}
@@ -88,9 +100,11 @@ class redMigratorHelper
 	}
 
 	/**
-	 * Getting the total 
+	 * Getting the total
 	 *
-	 * @return  int	The total number
+	 * @param redMigratorStep|null $step
+	 *
+	 * @return int The total number
 	 *
 	 * @since   3.0.0
 	 */
@@ -106,13 +120,17 @@ class redMigratorHelper
 	/**
 	 * Populate a sql file
 	 *
-	 * @return  bool	True if succeful
+	 * @param $db
+	 * @param $sqlfile
 	 *
+	 * @return bool True if succeful
+	 *
+	 * @throws Exception
 	 * @since   3.1.0
 	 */
 	public static function populateDatabase(& $db, $sqlfile)
 	{
-		if( !($buffer = file_get_contents($sqlfile)) )
+		if (!($buffer = file_get_contents($sqlfile)))
 		{
 			return -1;
 		}
@@ -122,12 +140,17 @@ class redMigratorHelper
 		foreach ($queries as $query)
 		{
 			$query = trim($query);
+
 			if ($query != '' && $query {0} != '#')
 			{
 				$db->setQuery($query);
-				try {
+
+				try
+				{
 					$db->query();
-				} catch (Exception $e) {
+				}
+				catch (Exception $e)
+				{
 					throw new Exception($e->getMessage());
 				}
 			}

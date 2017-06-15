@@ -5,27 +5,27 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.category.class.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for sections
  *
  * This class takes the sections from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since    0.4.5
  */
 class redMigratorSections extends redMigratorCategory
 {
 	/**
 	 * Setting the conditions hook
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return    void
+	 * @since    3.0.0
+	 * @throws    Exception
 	 */
 	public static function getConditionsHook()
 	{
@@ -33,36 +33,38 @@ class redMigratorSections extends redMigratorCategory
 
 		$conditions['select'] = '`id` AS old_id, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 
-		$where = array();
+		$where   = array();
 		$where[] = "scope = 'content'";
-		
+
 		$conditions['where'] = $where;
-		
+
 		return $conditions;
 	}
 
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
-	 * @return	array	Returns a reference to the source data array.
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @param null $rows
+	 *
+	 * @return array Returns a reference to the source data array.
+	 * @since    3.0.0
 	 */
 	public function databaseHook($rows = null)
-	{	
+	{
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 
-			$row['params'] = $this->convertParams($row['params']);
-			$row['title'] = str_replace("'", "&#39;", $row['title']);
+			$row['params']      = $this->convertParams($row['params']);
+			$row['title']       = str_replace("'", "&#39;", $row['title']);
 			$row['description'] = str_replace("'", "&#39;", $row['description']);
 
 			$row['extension'] = 'com_section';
 
 			// Correct alias
-			if ($row['alias'] == "") {
+			if ($row['alias'] == "")
+			{
 				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
 			}
 		}
@@ -73,9 +75,10 @@ class redMigratorSections extends redMigratorCategory
 	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @return	void
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @param null $rows
+	 *
+	 * @return void
+	 * @since    0.4.
 	 */
 	public function dataHook($rows = null)
 	{
@@ -99,8 +102,8 @@ class redMigratorSections extends redMigratorCategory
 	/**
 	 * Run custom code after hooks
 	 *
-	 * @return	void
-	 * @since	3.0
+	 * @return    void
+	 * @since    3.0
 	 */
 	public function afterHook()
 	{
@@ -113,8 +116,8 @@ class redMigratorSections extends redMigratorCategory
 	/**
 	 * Update the categories parent's
 	 *
-	 * @return	void
-	 * @since	3.0
+	 * @return    void
+	 * @since    3.0
 	 */
 	protected function fixParents()
 	{
@@ -134,7 +137,8 @@ class redMigratorSections extends redMigratorCategory
 			$table->setLocation($parent, 'last-child');
 
 			// Insert the category
-			if (!@$table->store()) {
+			if (!@$table->store())
+			{
 				throw new Exception($table->getError());
 			}
 		}
@@ -143,8 +147,8 @@ class redMigratorSections extends redMigratorCategory
 	/**
 	 * Insert existing categories saved in cleanup step
 	 *
-	 * @return	void
-	 * @since	3.0
+	 * @return    void
+	 * @since    3.0
 	 */
 	protected function insertExisting()
 	{
@@ -159,17 +163,17 @@ class redMigratorSections extends redMigratorCategory
 		$db->setQuery($query);
 		$categories = $db->loadAssocList();
 
-		foreach ($categories as $category) {
-
+		foreach ($categories as $category)
+		{
 			// Unset id
 			$category['id'] = 0;
 
 			// Looking for parent
-			$parent = 1;
+			$parent  = 1;
 			$explode = explode("/", $category['path']);
 
-			if (count($explode) > 1) {
-
+			if (count($explode) > 1)
+			{
 				// Getting the data
 				$query = $db->getQuery(true);
 				$query->select('id');
@@ -180,12 +184,10 @@ class redMigratorSections extends redMigratorCategory
 
 				$db->setQuery($query);
 				$parent = $db->loadResult();
-
 			}
 
 			// Inserting the category
 			$this->insertCategory($category, $parent);
 		}
-
-	} // end method
-} // end class
+	}
+}
