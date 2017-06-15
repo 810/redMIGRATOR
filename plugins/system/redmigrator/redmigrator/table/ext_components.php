@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Check to ensure this file is within the rest of the framework
@@ -14,97 +14,115 @@ defined('JPATH_BASE') or die();
 /**
  * Menu table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @package           Joomla.Framework
+ * @subpackage        Table
+ * @since             1.0
  */
 class redMigratorTableExt_Components extends redMigratorTable
 {
 	/** @var int Primary key */
-	var $id					= null;
+	var $id = null;
+
 	/** @var string */
-	var $name				= null;
+	var $name = null;
+
 	/** @var string */
-	var $link				= null;
+	var $link = null;
+
 	/** @var string */
-	var $menuid				= null;
+	var $menuid = null;
+
 	/** @var string */
-	var $parent				= null;
+	var $parent = null;
+
 	/** @var int */
-	var $admin_menu_link	= null;
+	var $admin_menu_link = null;
+
 	/** @var int */
-	var $admin_menu_alt		= null;
+	var $admin_menu_alt = null;
+
 	/** @var int */
-	var $option				= null;
+	var $option = null;
+
 	/** @var int */
-	var $ordering			= null;
+	var $ordering = null;
+
 	/** @var int */
-	var $iscore				= null;
+	var $iscore = null;
+
 	/** @var string */
-	var $params				= null;
+	var $params = null;
+
 	/** @var int */
-	var $enabled			= null;
+	var $enabled = null;
+
 	/** @var int */
-	var $element			= null;
+	var $element = null;
+
 	/** @var int */
-	var $type				= null;
+	var $type = null;
+
 	/** @var int */
-	var $client_id			= null;
+	var $client_id = null;
 
 	/**
 	 * Table type
 	 *
 	 * @var string
-	 */	
+	 */
 	var $_type = 'ext_components';
 
 	/**
 	 * Constructor
 	 *
 	 * @access protected
+	 *
 	 * @param database A database connector object
 	 */
-	function __construct( &$db ) {
-		parent::__construct( '#__components', 'id', $db );
+	function __construct(&$db)
+	{
+		parent::__construct('#__components', 'id', $db);
 	}
 
 	/**
 	 * Setting the conditions hook
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return    void
+	 * @since    3.0.0
+	 * @throws    Exception
 	 */
 	public function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['as'] = "c";
-		
+
 		$conditions['select'] = 'name, `option` AS element, params';
 
-		$where = array();
+		$where   = array();
 		$where[] = "c.parent = 0";
 		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact', 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_redmigrator', 'com_languages', 'com_login', 'com_mailto', 'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search', 'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
-		
+
 		$conditions['where'] = $where;
-		
+
 		return $conditions;
 	}
 
 	/**
-	 * 
 	 *
-	 * @access	public
-	 * @param		Array	Result to migrate
-	 * @return	Array	Migrated result
+	 *
+	 * @access    public
+	 *
+	 * @param        Array    Result to migrate
+	 *
+	 * @return    Array    Migrated result
 	 */
-	function migrate( )
-	{	
-    // Converting params to JSON
-    $this->params = $this->convertParams($this->params);
+	function migrate()
+	{
+		// Converting params to JSON
+		$this->params = $this->convertParams($this->params);
 		// Defaults
-		$this->type = 'component';
+		$this->type      = 'component';
 		$this->client_id = 1;
 	}
 

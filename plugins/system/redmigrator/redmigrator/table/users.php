@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Check to ensure this file is within the rest of the framework
@@ -14,9 +14,9 @@ defined('JPATH_BASE') or die();
 /**
  * Users table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @package           Joomla.Framework
+ * @subpackage        Table
+ * @since             1.0
  */
 class redMigratorTableUsers extends redMigratorTable
 {
@@ -25,131 +25,134 @@ class redMigratorTableUsers extends redMigratorTable
 	 *
 	 * @var int
 	 */
-	var $id				= null;
+	var $id = null;
 
 	/**
 	 * The users real name (or nickname)
 	 *
 	 * @var string
 	 */
-	var $name			= null;
+	var $name = null;
 
 	/**
 	 * The login name
 	 *
 	 * @var string
 	 */
-	var $username		= null;
+	var $username = null;
 
 	/**
 	 * The email
 	 *
 	 * @var string
 	 */
-	var $email			= null;
+	var $email = null;
 
 	/**
 	 * MD5 encrypted password
 	 *
 	 * @var string
 	 */
-	var $password		= null;
+	var $password = null;
 
 	/**
 	 * Description
 	 *
 	 * @var string
 	 */
-	var $usertype		= null;
+	var $usertype = null;
 
 	/**
 	 * Description
 	 *
 	 * @var int
 	 */
-	var $block			= null;
+	var $block = null;
 
 	/**
 	 * Description
 	 *
 	 * @var int
 	 */
-	var $sendEmail		= null;
+	var $sendEmail = null;
 
 	/**
 	 * Description
 	 *
 	 * @var datetime
 	 */
-	var $registerDate	= null;
+	var $registerDate = null;
 
 	/**
 	 * Description
 	 *
 	 * @var datetime
 	 */
-	var $lastvisitDate	= null;
+	var $lastvisitDate = null;
 
 	/**
 	 * Description
 	 *
 	 * @var string activation hash
 	 */
-	var $activation		= null;
+	var $activation = null;
 
 	/**
 	 * Description
 	 *
 	 * @var string
 	 */
-	var $params			= null;
+	var $params = null;
 
 	/**
 	 * Table type
 	 *
 	 * @var string
-	 */	
-	var $_type = 'users';	
+	 */
+	var $_type = 'users';
 
 	/**
-	* @param database A database connector object
-	*/
-	function __construct ( &$db )
+	 * @param database A database connector object
+	 */
+	function __construct(&$db)
 	{
-		parent::__construct( '#__users', 'id', $db );
+		parent::__construct('#__users', 'id', $db);
 
 		//initialise
 		$this->id        = 0;
 		$this->sendEmail = 0;
 	}
-	
+
 	/**
-	 * 
 	 *
-	 * @access	public
-	 * @param		Array	Result to migrate
-	 * @return	Array	Migrated result
+	 *
+	 * @access    public
+	 *
+	 * @param        Array    Result to migrate
+	 *
+	 * @return    Array    Migrated result
 	 */
-	function migrate ()
+	function migrate()
 	{
 		// Fixing the params compatible with 2.5/3.0
 		$this->params = $this->convertParams($this->params);
 
-    // Chaging admin username and email
-    if ($this->id == 62) {
-      $this->username = $this->username.'v15';
-      $this->email = $this->email.'v15';
-    }
+		// Changing admin username and email
+		if ($this->id == 62)
+		{
+			$this->username = $this->username . 'v15';
+			$this->email    = $this->email . 'v15';
+		}
 	}
 
 	/**
 	 * A hook to be able to modify params prior as they are converted to JSON.
 	 *
-	 * @param	object	$object	A reference to the parameters as an object.
+	 * @param    object $object A reference to the parameters as an object.
 	 *
-	 * @return	void
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return    void
+	 * @since    0.4.
+	 * @throws    Exception
 	 */
 	protected function convertParamsHook(&$object)
 	{

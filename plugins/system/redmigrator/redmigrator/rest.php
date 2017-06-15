@@ -5,11 +5,11 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * REST Message class
@@ -52,7 +52,7 @@ class JRESTMessage
 		'AUTH_USER',
 		'AUTH_PW',
 		'USER',
-		'PW'
+		'PW',
 	);
 
 	/**
@@ -102,7 +102,7 @@ class JRESTMessage
 		// If we found an REST message somewhere we need to set the URI and request method.
 		if ($found)
 		{
-			$this->_uri = new JURI($this->_fetchRequestUrl());
+			$this->_uri    = new JURI($this->_fetchRequestUrl());
 			$this->_method = strtoupper($_SERVER['REQUEST_METHOD']);
 		}
 
@@ -113,7 +113,7 @@ class JRESTMessage
 	 * Method to set the REST message parameters.  This will only set valid REST message parameters.  If non-valid
 	 * parameters are in the input array they will be ignored.
 	 *
-	 * @param   array  $parameters  The REST message parameters to set.
+	 * @param   array $parameters The REST message parameters to set.
 	 *
 	 * @return  void
 	 *
@@ -138,7 +138,7 @@ class JRESTMessage
 	/**
 	 * Encode a string according to the RFC3986
 	 *
-	 * @param   string  $s  string to encode
+	 * @param   string $s string to encode
 	 *
 	 * @return  string encoded string
 	 *
@@ -154,7 +154,7 @@ class JRESTMessage
 	 * Decode a string according to RFC3986.
 	 * Also correctly decodes RFC1738 urls.
 	 *
-	 * @param   string  $s  string to decode
+	 * @param   string $s string to decode
 	 *
 	 * @return  string  decoded string
 	 *
@@ -251,9 +251,9 @@ class JRESTMessage
 	}
 
 	/**
-	 * 
 	 *
-	 * @param   string  $header  Authorization header.
+	 *
+	 * @param   string $header Authorization header.
 	 *
 	 * @return  boolean  True if REST PHP_AUTH_USER header found.
 	 *
@@ -269,24 +269,33 @@ class JRESTMessage
 		{
 			if (isset($_SERVER[$k]))
 			{
-				if (strpos($k, 'AUTH_USER')) { 
+				if (strpos($k, 'AUTH_USER'))
+				{
 					$parameters['AUTH_USER'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'AUTH_PW')) {
+				}
+				elseif (strpos($k, 'AUTH_PW'))
+				{
 					$parameters['AUTH_PW'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'USER')) { 
+				}
+				elseif (strpos($k, 'USER'))
+				{
 					$parameters['USER'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'PW')) {
+				}
+				elseif (strpos($k, 'PW'))
+				{
 					$parameters['PW'] = trim($_SERVER[$k]);
-				}else{
+				}
+				else
+				{
 					$parameters[$k] = trim($_SERVER[$k]);
 				}
 			}
 		}
 
 		// If we didn't find anything return false.
-		if (empty($parameters) 
-			|| ( empty($parameters['AUTH_USER']) || empty($parameters['AUTH_PW']) ) 
-			&& ( empty($parameters['USER']) || empty($parameters['PW']) ) )
+		if (empty($parameters)
+			|| (empty($parameters['AUTH_USER']) || empty($parameters['AUTH_PW']))
+			&& (empty($parameters['USER']) || empty($parameters['PW'])))
 		{
 			return false;
 		}

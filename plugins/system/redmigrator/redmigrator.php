@@ -9,15 +9,15 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 /**
  * Joomla! System redMigrator Plugin
  *
- * @package		Joomla
- * @subpackage	System
+ * @package        Joomla
+ * @subpackage     System
  */
 class plgSystemredMigrator extends JPlugin
 {
@@ -35,14 +35,14 @@ class plgSystemredMigrator extends JPlugin
 	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
 	 * This causes problems with cross-referencing necessary for the observer design pattern.
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
+	 * @param   object &$subject The object to observe
+	 * @param   array  $config   An array that holds the plugin configuration
 	 *
-	 * @since	1.0
+	 * @since    1.0
 	 */
 	public function __construct(&$subject, $config)
 	{
-	parent::__construct($subject, $config);
+		parent::__construct($subject, $config);
 
 		// Load plugin language
 		$this->loadLanguage();
@@ -81,8 +81,8 @@ class plgSystemredMigrator extends JPlugin
 		}
 
 		// Request was found
-		if ($request == true) {
-
+		if ($request == true)
+		{
 			// Check the username and pass
 			$auth = new JRESTAuthorizer;
 
@@ -99,9 +99,12 @@ class plgSystemredMigrator extends JPlugin
 
 			$return = $dispatcher->execute($rest->_parameters);
 
-			if ($return !== false) {
+			if ($return !== false)
+			{
 				echo $return;
-			}else{
+			}
+			else
+			{
 				JResponse::setHeader('status', 401);
 				JResponse::setBody('Dispatch error.');
 				JResponse::sendHeaders();
@@ -141,14 +144,19 @@ class plgSystemredMigrator extends JPlugin
 			$this->populateDatabase($db, $sqlfile);
 		}
 
-	} // end method
+	}
 
 	/**
 	 * populateDatabase
+	 *
+	 * @param $db
+	 * @param $sqlfile
+	 *
+	 * @return bool|int
 	 */
 	function populateDatabase(& $db, $sqlfile)
 	{
-		if( !($buffer = file_get_contents($sqlfile)) )
+		if (!($buffer = file_get_contents($sqlfile)))
 		{
 			return -1;
 		}
@@ -158,7 +166,7 @@ class plgSystemredMigrator extends JPlugin
 		foreach ($queries as $query)
 		{
 			$query = trim($query);
-			if ($query != '' && $query {0} != '#')
+			if ($query != '' && $query{0} != '#')
 			{
 				$db->setQuery($query);
 				$db->query() or die($db->getErrorMsg());
@@ -167,5 +175,4 @@ class plgSystemredMigrator extends JPlugin
 
 		return true;
 	}
-
-} // end class
+}

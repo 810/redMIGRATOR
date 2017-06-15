@@ -17,17 +17,17 @@ defined('JPATH_BASE') or die();
  * Parent classes to all tables.
  *
  * @abstract
- * @package 	Joomla.Framework
- * @subpackage	Table
- * @since		1.0
- * @tutorial	Joomla.Framework/jtable.cls
+ * @package       Joomla.Framework
+ * @subpackage    Table
+ * @since         1.0
+ * @tutorial      Joomla.Framework/jtable.cls
  */
 class redMigratorTable extends JTable
 {
 	/**
 	 * Get the row
 	 *
-	 * @return  string/json	The json row
+	 * @return  string/json    The json row
 	 *
 	 * @since   3.0
 	 */
@@ -38,12 +38,16 @@ class redMigratorTable extends JTable
 		// Load the row
 		$load = $this->load($id);
 
-		if ($load !== false) {
+		if ($load !== false)
+		{
 			// Migrate it
 			$this->migrate();
+
 			// Return as JSON
 			return $this->toJSON();
-		}else{
+		}
+		else
+		{
 			return false;
 		}
 	}
@@ -63,11 +67,13 @@ class redMigratorTable extends JTable
 		$db = JFactory::getDbo();
 
 		$query = "UPDATE redmigrator_plugin_steps SET cid = 0";
-		if ($table != false) {
+
+		if ($table != false)
+		{
 			$query .= " WHERE name = '{$table}'";
 		}
 
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$result = $db->query();
 
 		return true;
@@ -76,19 +82,21 @@ class redMigratorTable extends JTable
 	/**
 	 * Get the row
 	 *
-	 * @access	public
-	 * @return	int	The total of rows
+	 * @access    public
+	 * @return    int    The total of rows
 	 */
-	public function load($oid = null, $reset = true )
+	public function load($oid = null, $reset = true)
 	{
-		$key = $this->getKeyName();
+		$key   = $this->getKeyName();
 		$table = $this->getTableName();
 
-		if ($oid === null) {
+		if ($oid === null)
+		{
 			return false;
 		}
 
-		if ($oid !== null AND $key != '') {
+		if ($oid !== null AND $key != '')
+		{
 			$this->$key = $oid;
 		}
 
@@ -102,31 +110,36 @@ class redMigratorTable extends JTable
 
 		//
 		$where = '';
-		if (isset($conditions['where'])) {
-			$where = count( $conditions['where'] ) ? 'WHERE ' . implode( ' AND ', $conditions['where'] ) : '';
+		if (isset($conditions['where']))
+		{
+			$where = count($conditions['where']) ? 'WHERE ' . implode(' AND ', $conditions['where']) : '';
 		}
 
 		$where_or = '';
-		if (isset($conditions['where_or'])) {
-			$where_or = count( $conditions['where_or'] ) ? 'WHERE ' . implode( ' OR ', $conditions['where_or'] ) : '';
+		if (isset($conditions['where_or']))
+		{
+			$where_or = count($conditions['where_or']) ? 'WHERE ' . implode(' OR ', $conditions['where_or']) : '';
 		}
 
 		$select = isset($conditions['select']) ? $conditions['select'] : '*';
-		$as = isset($conditions['as']) ? 'AS '.$conditions['as'] : '';
+		$as     = isset($conditions['as']) ? 'AS ' . $conditions['as'] : '';
 
 		//
 		$join = '';
-		if (isset($conditions['join'])) {
-			$join = count( $conditions['join'] ) ? implode( ' ', $conditions['join'] ) : '';
+		if (isset($conditions['join']))
+		{
+			$join = count($conditions['join']) ? implode(' ', $conditions['join']) : '';
 		}
 
 		$order = '';
-		if ($key != '') {
+		if ($key != '')
+		{
 			$order = isset($conditions['order']) ? "ORDER BY " . $conditions['order'] : "ORDER BY {$key} ASC";
 		}
 
 		$group_by = '';
-		if (isset($conditions['group_by'])) {
+		if (isset($conditions['group_by']))
+		{
 			$group_by = isset($conditions['group_by']) ? "GROUP BY " . $conditions['group_by'] : "";
 		}
 
@@ -134,17 +147,20 @@ class redMigratorTable extends JTable
 
 		// Get the row
 		$query = "SELECT {$select} FROM {$table} {$as} {$join} {$where}{$where_or} {$group_by} {$order} {$limit}";
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$row = $db->loadAssoc();
 
-		if (is_array($row)) {
-			$this->_updateID($oid+1);
+		if (is_array($row))
+		{
+			$this->_updateID($oid + 1);
+
 			return $this->bind($row);
 		}
 		else
 		{
 			$this->_updateID(0);
-			$this->setError( $db->getErrorMsg() );
+			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 	}
@@ -152,7 +168,9 @@ class redMigratorTable extends JTable
 	/**
 	 * Update the step id
 	 *
-	 * @return  boolean  True if the update is ok
+	 * @param $id
+	 *
+	 * @return bool True if the update is ok
 	 *
 	 * @since   3.0.0
 	 */
@@ -163,9 +181,10 @@ class redMigratorTable extends JTable
 
 		$name = $this->_getStepName();
 
-		$query = "UPDATE `redmigrator_plugin_steps` SET `cid` = '{$id}' WHERE name = ".$db->quote($name);
+		$query = "UPDATE `redmigrator_plugin_steps` SET `cid` = '{$id}' WHERE name = " . $db->quote($name);
 
-		$db->setQuery( $query );
+		$db->setQuery($query);
+
 		return $db->query();
 	}
 
@@ -184,8 +203,8 @@ class redMigratorTable extends JTable
 		$name = $this->_getStepName();
 
 		$query = 'SELECT `cid` FROM redmigrator_plugin_steps'
-		. ' WHERE name = '.$db->quote($name);
-		$db->setQuery( $query );
+			. ' WHERE name = ' . $db->quote($name);
+		$db->setQuery($query);
 		$stepid = (int) $db->loadResult();
 
 		return $stepid;
@@ -200,9 +219,12 @@ class redMigratorTable extends JTable
 	 */
 	public function _getStepName()
 	{
-		if ($this->_type == 'generic') {
+		if ($this->_type == 'generic')
+		{
 			return str_replace('#__', '', $this->_tbl);
-		}else{
+		}
+		else
+		{
 			return $this->_type;
 		}
 	}
@@ -216,8 +238,9 @@ class redMigratorTable extends JTable
 	 */
 	public function getConditionsHook()
 	{
-		$conditions = array();
+		$conditions          = array();
 		$conditions['where'] = array();
+
 		// Do customisation of the params field here for specific data.
 		return $conditions;
 	}
@@ -237,8 +260,8 @@ class redMigratorTable extends JTable
 	/**
 	 * Get total of the rows of the table
 	 *
-	 * @access	public
-	 * @return	int	The total of rows
+	 * @access    public
+	 * @return    int    The total of rows
 	 */
 	public function getTotal()
 	{
@@ -248,53 +271,61 @@ class redMigratorTable extends JTable
 		$conditions = $this->getConditionsHook();
 
 		$where = '';
-		if (isset($conditions['where'])) {
-			$where = count( $conditions['where'] ) ? 'WHERE ' . implode( ' AND ', $conditions['where'] ) : '';
+		if (isset($conditions['where']))
+		{
+			$where = count($conditions['where']) ? 'WHERE ' . implode(' AND ', $conditions['where']) : '';
 		}
 
 		$where_or = '';
-		if (isset($conditions['where_or'])) {
-			$where_or = count( $conditions['where_or'] ) ? 'WHERE ' . implode( ' OR ', $conditions['where_or'] ) : '';
+		if (isset($conditions['where_or']))
+		{
+			$where_or = count($conditions['where_or']) ? 'WHERE ' . implode(' OR ', $conditions['where_or']) : '';
 		}
-		$as = isset($conditions['as']) ? 'AS '.$conditions['as'] : '';
+		$as = isset($conditions['as']) ? 'AS ' . $conditions['as'] : '';
 
 		$join = '';
-		if (isset($conditions['join'])) {
-			$join = count( $conditions['join'] ) ? implode( ' ', $conditions['join'] ) : '';
+		if (isset($conditions['join']))
+		{
+			$join = count($conditions['join']) ? implode(' ', $conditions['join']) : '';
 		}
 
 		$group_by = '';
-		if (isset($conditions['group_by'])) {
+		if (isset($conditions['group_by']))
+		{
 			$group_by = isset($conditions['group_by']) ? "GROUP BY " . $conditions['group_by'] : "";
 		}
 
 		// Get Total
 		$query = "SELECT COUNT(*) FROM {$this->_tbl} {$as} {$join} {$where}{$where_or} {$group_by}";
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$total = (int) $db->loadResult();
 
-		if (is_int($total)) {
+		if (is_int($total))
+		{
 			return $total;
 		}
 		else
 		{
-			$this->setError( $db->getErrorMsg() );
+			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 	}
 
 	/**
- 	* Writes to file all the selected database tables structure with SHOW CREATE TABLE
-	* @param string $table The table name
-	*/
-	public function getTableStructure() {
+	 * Writes to file all the selected database tables structure with SHOW CREATE TABLE
+	 *
+	 * @param string $table The table name
+	 */
+	public function getTableStructure()
+	{
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
 		$tables = $this->_tbl;
 
 		// Header
-		$structure  = "-- \n";
+		$structure = "-- \n";
 		$structure .= "-- Table structure for table `{$tables}`\n";
 		$structure .= "-- \n\n";
 
@@ -303,6 +334,7 @@ class redMigratorTable extends JTable
 
 		// Sanitize input to an array and iterate over the list.
 		settype($tables, 'array');
+
 		foreach ($tables as $table)
 		{
 			// Set the query to get the table CREATE statement.
@@ -319,6 +351,7 @@ class redMigratorTable extends JTable
 
 		$structure = str_replace('TYPE', 'ENGINE', $structure);
 		$structure = str_replace($db->getPrefix(), '#__', $structure);
+
 		//$structure = str_replace('MyISAM', 'InnoDB', $structure);
 
 		return $structure;
@@ -337,18 +370,21 @@ class redMigratorTable extends JTable
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
-		$table = $this->_tbl;
+		$table  = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table);
+		$table = str_replace('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$db->setQuery('SHOW TABLES');
 		$tables = $db->loadResultArray();
 
-		if (in_array($table, $tables)) {
+		if (in_array($table, $tables))
+		{
 			return 'YES';
-		}else{
+		}
+		else
+		{
 			return 'NO';
 		}
 	}
@@ -366,10 +402,10 @@ class redMigratorTable extends JTable
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
-		$table = $this->_tbl;
+		$table  = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table);
+		$table = str_replace('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$query = "SELECT params FROM {$table} WHERE `option` = 'com_content' LIMIT 1";
@@ -386,13 +422,13 @@ class redMigratorTable extends JTable
 	 *
 	 * @access public
 	 */
-	public function toJSON ()
+	public function toJSON()
 	{
 		$array = array();
 
-		foreach (get_object_vars( $this ) as $k => $v)
+		foreach (get_object_vars($this) as $k => $v)
 		{
-			if (is_array($v) or is_object($v) or $v === NULL)
+			if (is_array($v) or is_object($v) or $v === null)
 			{
 				continue;
 			}
@@ -412,16 +448,16 @@ class redMigratorTable extends JTable
 	/**
 	 * Converts the params fields into a JSON string.
 	 *
-	 * @param	string	$params	The source text definition for the parameter field.
+	 * @param    string $params The source text definition for the parameter field.
 	 *
-	 * @return	string	A JSON encoded string representation of the parameters.
-	 * @since	0.4.
-	 * @throws	Exception from the convertParamsHook.
+	 * @return    string    A JSON encoded string representation of the parameters.
+	 * @since    0.4.
+	 * @throws    Exception from the convertParamsHook.
 	 */
 	protected function convertParams($params)
 	{
-		$temp	= new JParameter($params);
-		$object	= $temp->toObject();
+		$temp   = new JParameter($params);
+		$object = $temp->toObject();
 
 		// Fire the hook in case this parameter field needs modification.
 		$this->convertParamsHook($object);
@@ -432,11 +468,11 @@ class redMigratorTable extends JTable
 	/**
 	 * A hook to be able to modify params prior as they are converted to JSON.
 	 *
-	 * @param	object	$object	A reference to the parameters as an object.
+	 * @param    object $object A reference to the parameters as an object.
 	 *
-	 * @return	void
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return    void
+	 * @since    0.4.
+	 * @throws    Exception
 	 */
 	protected function convertParamsHook(&$object)
 	{

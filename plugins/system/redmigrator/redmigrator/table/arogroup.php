@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2012 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
@@ -15,81 +15,88 @@ defined('JPATH_BASE') or die();
 /**
  * AroGroup table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @package           Joomla.Framework
+ * @subpackage        Table
+ * @since             1.0
  */
 class redMigratorTableAROGroup extends redMigratorTable
 {
 	/** @var int Primary key */
-	var $id			= null;
+	var $id = null;
 
-	var $parent_id	= null;
+	var $parent_id = null;
 
-	var $name		= null;
+	var $name = null;
 
-	var $value		= null;
+	var $value = null;
 
-	var $lft		= null;
+	var $lft = null;
 
-	var $rgt		= null;
+	var $rgt = null;
 
 	/**
 	 * Table type
 	 *
 	 * @var string
-	 */		
-	var $_type = 'arogroup';	
+	 */
+	var $_type = 'arogroup';
 
 	protected $usergroup_map = array(
 		// Old	=> // New
-		0		=> 0,	// ROOT
-		28		=> 1,	// USERS (=Public)
-		29		=> 1,	// Public Frontend
-		18		=> 2,	// Registered
-		19		=> 3,	// Author
-		20		=> 4,	// Editor
-		21		=> 5,	// Publisher
-		30		=> 6,	// Public Backend (=Manager)
-		23		=> 6,	// Manager
-		24		=> 7,	// Administrator
-		25		=> 8,	// Super Administrator
+		0  => 0,    // ROOT
+		28 => 1,    // USERS (=Public)
+		29 => 1,    // Public Frontend
+		18 => 2,    // Registered
+		19 => 3,    // Author
+		20 => 4,    // Editor
+		21 => 5,    // Publisher
+		30 => 6,    // Public Backend (=Manager)
+		23 => 6,    // Manager
+		24 => 7,    // Administrator
+		25 => 8,    // Super Administrator
 	);
 
-	function __construct( &$db )
+	/**
+	 * redMigratorTableAROGroup constructor.
+	 *
+	 * @param string $db
+	 */
+	function __construct(&$db)
 	{
-		parent::__construct( '#__core_acl_aro_groups', 'id', $db );
+		parent::__construct('#__core_acl_aro_groups', 'id', $db);
 	}
 
 	/**
 	 * Setting the conditions hook
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return    void
+	 * @since    3.0.0
+	 * @throws    Exception
 	 */
 	public function getConditionsHook()
 	{
 		$conditions = array();
-				
-		$where = array();
+
+		$where   = array();
 		$where[] = "{$this->_tbl_key} > 30";
-		
+
 		$conditions['where'] = $where;
-		
+
 		return $conditions;
 	}
 
 	/**
-	 * 
 	 *
-	 * @access	public
+	 *
+	 * @access    public
 	 */
-	function migrate( )
-	{	
+	function migrate()
+	{
 		// Note, if we are here, these are custom groups we didn't know about.
-		if (isset($this->parent_id)) {
-			if ($this->parent_id <= 30) {
+		if (isset($this->parent_id))
+		{
+			if ($this->parent_id <= 30)
+			{
 				$this->parent_id = $this->usergroup_map[$this->parent_id];
 			}
 		}

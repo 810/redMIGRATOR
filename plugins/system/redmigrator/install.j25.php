@@ -21,8 +21,8 @@ class PlgSystemRedmigratorInstallerScript
 	/**
 	 * Method to run after an install/update/uninstall method
 	 *
-	 * @param   object  $type    type of change (install, update or discover_install)
-	 * @param   object  $parent  class calling this method
+	 * @param   object $type   type of change (install, update or discover_install)
+	 * @param   object $parent class calling this method
 	 *
 	 * @return void
 	 */
