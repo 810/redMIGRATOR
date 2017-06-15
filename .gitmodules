@@ -1,6 +1,8 @@
 [submodule "redCORE"]
 	path = redCORE
-	url = https://travisredweb:travisredweb2013github@github.com/redCOMPONENT-COM/redCORE
+	url = https://github.com/redCOMPONENT-COM/redCORE.git
+        branch = develop
 [submodule ".travis/phpcs/Joomla"]
 	path = .travis/phpcs/Joomla
-	url = https://github.com/joomla/coding-standards
+	url = https://github.com/joomla/coding-standards.git
+        branch = master
