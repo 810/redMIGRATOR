@@ -10,8 +10,16 @@
 	<version>3.7.0</version>
 	<description>Kunena script for redMigrator</description>
 
-	<installfile>install.php</installfile>
-	<uninstallfile>unistall.php</uninstallfile>
+	<install>
+		<sql>
+			<file driver="mysqli" charset="utf8">sql/install.utf8</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysqli" charset="utf8">sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
 
 	<files>
 		<filename plugin="redmigrator_kunena">redmigrator_kunena.php</filename>

@@ -87,7 +87,7 @@
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_USERNAME"
                 description="COM_REDMIGRATOR_CONFIG_USERNAME_DB_DESC"
-                default=""
+                default="root"
                 />
         <field
                 name="old_password"
@@ -103,7 +103,7 @@
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_DATABASE"
                 description="COM_REDMIGRATOR_CONFIG_DATABASE_DB_DESC"
-                default=""
+                default="red"
                 />
         <field
                 name="old_dbprefix"
